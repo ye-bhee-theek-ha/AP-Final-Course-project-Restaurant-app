@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #4f46e5;
+  --secondary-color: #f97316;
+  --font-family: "Poppins", sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+  color: #333;
+  background-color: #f9fafb;
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.bg-primary {
+  background-color: var(--primary-color);
+}
+
+.border-primary {
+  border-color: var(--primary-color);
+}
+
+.hover\:bg-primary\/90:hover {
+  background-color: color-mix(in srgb, var(--primary-color) 90%, transparent);
+}
+
+.focus\:ring-primary:focus {
+  --tw-ring-color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color);
+}
+
+.border-secondary {
+  border-color: var(--secondary-color);
+}
