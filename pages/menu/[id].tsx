@@ -40,23 +40,31 @@ export default function MenuItemDetail() {
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
   const { addItem } = useCart()
 
+  console.log(id)
+
+
   useEffect(() => {
     const fetchMenuItem = async () => {
       if (!id) return
 
       try {
         setLoading(true)
-        const docRef = doc(db, "menu", id as string)
+        const docRef = doc(db, "Resturant/1")
+
         const docSnap = await getDoc(docRef)
 
         if (docSnap.exists()) {
-          const menuItem = { id: docSnap.id, ...docSnap.data() } as MenuItem
-          setItem(menuItem)
+          const menus = docSnap.data().menu
+          console.log(menus)
+          const menuItem = menus.find((item: MenuItem) => item.id === id)
+          if (menuItem) {
+            setItem(menuItem)
+          }
 
           // Initialize selected options
           if (menuItem.options) {
             const initialOptions: Record<string, string> = {}
-            menuItem.options.forEach((option) => {
+            menuItem.options.forEach((option:any) => {
               if (option.choices.length > 0) {
                 initialOptions[option.name] = option.choices[0].name
               }
@@ -67,7 +75,7 @@ export default function MenuItemDetail() {
           // Fetch related items if any
           if (menuItem.relatedItems && menuItem.relatedItems.length > 0) {
             const relatedDocs = await Promise.all(
-              menuItem.relatedItems.map((relatedId) => getDoc(doc(db, "menu", relatedId))),
+              menuItem.relatedItems.map((relatedId:any) => getDoc(doc(db, "menu", relatedId))),
             )
 
             const relatedItemsData = relatedDocs
@@ -82,54 +90,6 @@ export default function MenuItemDetail() {
         }
       } catch (error) {
         console.error("Error fetching menu item:", error)
-        // Set fallback data for demo
-        setItem({
-          id: "1",
-          name: "Signature Pasta",
-          description:
-            "Homemade pasta with our special sauce and fresh herbs. Made with locally sourced ingredients and prepared fresh daily by our expert chefs. This dish has been a customer favorite since we opened.",
-          price: 18.99,
-          image: "/placeholder.svg?height=600&width=800",
-          category: "main-courses",
-          featured: true,
-          options: [
-            {
-              name: "Pasta Type",
-              choices: [{ name: "Spaghetti" }, { name: "Fettuccine" }, { name: "Penne" }],
-            },
-            {
-              name: "Add Protein",
-              choices: [
-                { name: "None", price: 0 },
-                { name: "Chicken", price: 3.99 },
-                { name: "Shrimp", price: 5.99 },
-              ],
-            },
-          ],
-          allergens: ["Gluten", "Dairy"],
-          dietary: ["Vegetarian"],
-        })
-
-        setRelatedItems([
-          {
-            id: "2",
-            name: "Garlic Bread",
-            description: "Freshly baked bread with garlic butter",
-            price: 5.99,
-            image: "/placeholder.svg?height=300&width=400",
-            category: "appetizers",
-            featured: false,
-          },
-          {
-            id: "3",
-            name: "Tiramisu",
-            description: "Classic Italian dessert",
-            price: 8.99,
-            image: "/placeholder.svg?height=300&width=400",
-            category: "desserts",
-            featured: false,
-          },
-        ])
       } finally {
         setLoading(false)
       }
@@ -137,6 +97,8 @@ export default function MenuItemDetail() {
 
     fetchMenuItem()
   }, [id, router])
+
+
 
   const handleQuantityChange = (value: number) => {
     setQuantity(Math.max(1, Math.min(10, value)))
@@ -173,7 +135,7 @@ export default function MenuItemDetail() {
     addItem({
       id: item.id,
       name: item.name,
-      price: calculateTotalPrice() / quantity, // Price per item with options
+      price: calculateTotalPrice() / quantity,
       quantity,
       image: item.image,
       options: selectedOptions,
@@ -228,34 +190,31 @@ export default function MenuItemDetail() {
               <p className="text-gray-700 mb-4">{item.description}</p>
 
               {/* Dietary and Allergen Info */}
-              {(item.dietary?.length > 0 || item.allergens?.length > 0) && (
-                <div className="mb-4">
-                  {item.dietary?.length > 0 && (
-                    <div className="mb-2">
-                      <span className="text-sm font-medium">Dietary:</span>
-                      <div className="flex flex-wrap gap-1 mt-1">
+                {((item.dietary && item.dietary.length > 0) || (item.allergens && item.allergens.length > 0)) && (
+                  <div className="mb-4">
+                    {/* Dietary Information Section */}
+                    {item.dietary && item.dietary.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-1">
                         {item.dietary.map((diet) => (
                           <span key={diet} className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
                             {diet}
                           </span>
                         ))}
                       </div>
-                    </div>
-                  )}
-                  {item.allergens?.length > 0 && (
-                    <div>
-                      <span className="text-sm font-medium">Contains:</span>
-                      <div className="flex flex-wrap gap-1 mt-1">
+                    )}
+
+                    {/* Allergens Information Section */}
+                    {item.allergens && item.allergens.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
                         {item.allergens.map((allergen) => (
                           <span key={allergen} className="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded-full">
                             {allergen}
                           </span>
                         ))}
                       </div>
-                    </div>
-                  )}
-                </div>
-              )}
+                    )}
+                  </div>
+                )}
             </div>
 
             {/* Options */}

@@ -30,69 +30,7 @@ type Testimonial = {
   avatar?: string
 }
 
-// Fallback data
-const fallbackFeaturedItems: MenuItem[] = [
-  {
-    id: "1",
-    name: "Signature Pasta",
-    description: "Homemade pasta with our special sauce and fresh herbs",
-    price: 18.99,
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Main Course",
-    featured: true,
-  },
-  {
-    id: "2",
-    name: "Grilled Salmon",
-    description: "Fresh salmon fillet with lemon butter sauce and seasonal vegetables",
-    price: 24.99,
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Main Course",
-    featured: true,
-  },
-  {
-    id: "3",
-    name: "Chocolate Lava Cake",
-    description: "Warm chocolate cake with a molten center, served with vanilla ice cream",
-    price: 9.99,
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Dessert",
-    featured: true,
-  },
-  {
-    id: "4",
-    name: "Artisan Cheese Platter",
-    description: "Selection of fine cheeses with crackers, fruits, and honey",
-    price: 16.99,
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Appetizer",
-    featured: true,
-  },
-]
 
-const fallbackTestimonials: Testimonial[] = [
-  {
-    id: "1",
-    name: "John Smith",
-    rating: 5,
-    comment: "Absolutely amazing food and service! The atmosphere was perfect for our anniversary dinner.",
-    date: "2023-04-15",
-  },
-  {
-    id: "2",
-    name: "Sarah Johnson",
-    rating: 4,
-    comment: "Great food and friendly staff. The pasta was delicious and the wine selection is excellent.",
-    date: "2023-05-22",
-  },
-  {
-    id: "3",
-    name: "Michael Brown",
-    rating: 5,
-    comment: "Best restaurant in town! We come here every month and are never disappointed.",
-    date: "2023-06-10",
-  },
-]
 
 type Category = {
   id: string
@@ -162,6 +100,7 @@ function HomePage() {
       <section className="relative h-screen flex items-center">
         <div className="absolute inset-0 z-0">
           <Image
+          //TODO add image
             src="/placeholder.svg?height=1080&width=1920"
             alt="Restaurant hero image"
             fill
