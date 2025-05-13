@@ -101,7 +101,7 @@ function HomePage() {
         <div className="absolute inset-0 z-0">
           <Image
           //TODO add image
-            src="/placeholder.svg?height=1080&width=1920"
+            src="public\main_menu.png"
             alt="Restaurant hero image"
             fill
             priority
